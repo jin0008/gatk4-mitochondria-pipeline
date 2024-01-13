@@ -261,7 +261,7 @@ task RevertSam {
     input_bam: "aligned bam"
   }
   command {
-    java -Xmx1000m -jar /usr/gitc/picard.jar \
+    gatk \
     RevertSam \
     INPUT=~{input_bam} \
     OUTPUT_BY_READGROUP=false \
@@ -309,7 +309,7 @@ task CoverageAtEveryBase {
   command <<<
     set -e
 
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    gatk CollectHsMetrics \
       I=~{input_bam_regular_ref} \
       R=~{ref_fasta} \
       PER_BASE_COVERAGE=non_control_region.tsv \
@@ -319,7 +319,7 @@ task CoverageAtEveryBase {
       COVMAX=20000 \
       SAMPLE_SIZE=1
 
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    gatk CollectHsMetrics \
       I=~{input_bam_shifted_ref} \
       R=~{shifted_ref_fasta} \
       PER_BASE_COVERAGE=control_region_shifted.tsv \
