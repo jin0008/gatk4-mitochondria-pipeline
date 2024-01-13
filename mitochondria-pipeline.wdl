@@ -255,7 +255,7 @@ task RevertSam {
   command {
     gatk RevertSam \
     -I ~{input_bam} \
-    OUTPUT_BY_READGROUP=false \
+    --OUTPUT_BY_READGROUP false \
     -O ~{basename}.bam \
     --VALIDATION_STRINGENCY LENIENT \
     --ATTRIBUTE_TO_CLEAR FT \
