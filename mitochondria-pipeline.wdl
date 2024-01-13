@@ -221,9 +221,6 @@ task SubsetBamToChrM {
     }
   }
   command <<<
-    set -e
-    export GATK_LOCAL_JAR=~{default="/home/hanjinu/src/gatk-4.5.0.0/gatk-package-4.5.0.0-local.jar" gatk_override}
-
     gatk PrintReads \
       ~{"-R " + ref_fasta} \
       -L ~{contig_name} \
@@ -232,12 +229,7 @@ task SubsetBamToChrM {
       -I ~{input_bam} \
       -O ~{basename}.bam
   >>>
-  runtime {
-    memory: "3 GB"
-    disks: "local-disk " + disk_size + " HDD"
-    docker: "gatk:latest"
-    preemptible: select_first([preemptible_tries, 5])
-  }
+
   output {
     File output_bam = "~{basename}.bam"
     File output_bai = "~{basename}.bai"
@@ -262,20 +254,14 @@ task RevertSam {
   }
   command {
     gatk RevertSam \
-    I=~{input_bam} \
+    -I ~{input_bam} \
     OUTPUT_BY_READGROUP=false \
-    O=~{basename}.bam \
-    VALIDATION_STRINGENCY=LENIENT \
-    ATTRIBUTE_TO_CLEAR=FT \
-    ATTRIBUTE_TO_CLEAR=CO \
-    SORT_ORDER=queryname \
-    RESTORE_ORIGINAL_QUALITIES=false
-  }
-  runtime {
-    disks: "local-disk " + disk_size + " HDD"
-    memory: "16 GB"
-    docker: "gatk:latest"
-    preemptible: select_first([preemptible_tries, 5])
+    -O ~{basename}.bam \
+    --VALIDATION_STRINGENCY LENIENT \
+    --ATTRIBUTE_TO_CLEAR FT \
+    --ATTRIBUTE_TO_CLEAR CO \
+    --SORT_ORDER queryname \
+    --RESTORE_ORIGINAL_QUALITIES false
   }
   output {
     File unmapped_bam = "~{basename}.bam"
@@ -309,24 +295,24 @@ task CoverageAtEveryBase {
     set -e
 
     gatk CollectHsMetrics \
-      I=~{input_bam_regular_ref} \
-      R=~{ref_fasta} \
-      PER_BASE_COVERAGE=non_control_region.tsv \
-      O=non_control_region.metrics \
-      TI=~{non_control_region_interval_list} \
-      BI=~{non_control_region_interval_list} \
-      COVMAX=20000 \
-      SAMPLE_SIZE=1
+      -I ~{input_bam_regular_ref} \
+      -R ~{ref_fasta} \
+      --PER_BASE_COVERAGE non_control_region.tsv \
+      -O non_control_region.metrics \
+      -TI ~{non_control_region_interval_list} \
+      -BI ~{non_control_region_interval_list} \
+      -covMAX 20000 \
+      --SAMPLE_SIZE 1
 
     gatk CollectHsMetrics \
-      I=~{input_bam_shifted_ref} \
-      R=~{shifted_ref_fasta} \
-      PER_BASE_COVERAGE=control_region_shifted.tsv \
-      O=control_region_shifted.metrics \
-      TI=~{control_region_shifted_reference_interval_list} \
-      BI=~{control_region_shifted_reference_interval_list} \
-      COVMAX=20000 \
-      SAMPLE_SIZE=1
+      -I ~{input_bam_shifted_ref} \
+      -R ~{shifted_ref_fasta} \
+      --PER_BASE_COVERAGE control_region_shifted.tsv \
+      -O control_region_shifted.metrics \
+      -TI ~{control_region_shifted_reference_interval_list} \
+      -BI ~{control_region_shifted_reference_interval_list} \
+      -covMAX 20000 \
+      --SAMPLE_SIZE=1
 
     R --vanilla <<CODE
       shift_back = function(x) {
@@ -350,12 +336,6 @@ task CoverageAtEveryBase {
 
     CODE
   >>>
-  runtime {
-    disks: "local-disk " + disk_size + " HDD"
-    memory: "16 GB"
-    docker: "gatk:latest"
-    preemptible: select_first([preemptible_tries, 5])
-  }
   output {
     File table = "per_base_coverage.tsv"
   }
