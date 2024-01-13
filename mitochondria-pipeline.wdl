@@ -13,7 +13,7 @@
 ## - Optional realigned to chrM BAM
 ##
 ## Software version notes :
-## - GATK 4.1
+## - GATK 4.5.0.0
 ## - Cromwell version support
 ##  - Successfully tested on v37
 ##  - Does not work on versions < v23 due to output syntax
@@ -214,10 +214,10 @@ task SubsetBamToChrM {
   parameter_meta {
     ref_fasta: "Reference is only required for cram input. If it is provided ref_fasta_index and ref_dict are also required."
     input_bam: {
-      localization_optional: true
+      localization_optional: false
     }
     input_bai: {
-      localization_optional: true
+      localization_optional: false
     }
   }
   command <<<
