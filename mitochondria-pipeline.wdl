@@ -222,7 +222,7 @@ task SubsetBamToChrM {
   }
   command <<<
     set -e
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/home/hanjinu/src/gatk-4.5.0.0/gatk-package-4.5.0.0-local.jar" gatk_override}
 
     gatk PrintReads \
       ~{"-R " + ref_fasta} \
