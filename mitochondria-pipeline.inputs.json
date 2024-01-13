@@ -1,6 +1,6 @@
 {
-  "MitochondriaPipeline.wgs_aligned_input_bam_or_cram": "gs://gatk-best-practices/mitochondria-pipeline/G97753.NA12878.bam",
-  "MitochondriaPipeline.wgs_aligned_input_bam_or_cram_index": "gs://gatk-best-practices/mitochondria-pipel;ine/G97753.NA12878.bai",
+  "MitochondriaPipeline.wgs_aligned_input_bam_or_cram": "/media/hanjinu/SSD_12TB/WGS/URD_GH_129/URD_GH_129.dedup.bam",
+  "MitochondriaPipeline.wgs_aligned_input_bam_or_cram_index": "/media/hanjinu/SSD_12TB/WGS/URD_GH_129/URD_GH_129.dedup.bam.bai",
   
   "MitochondriaPipeline.mt_shifted_fasta": "/media/hanjinu/PM883/db/refs/chrM/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta",
   "MitochondriaPipeline.mt_shifted_fasta_index": "/media/hanjinu/PM883/db/refs/chrM/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta.fai",
