@@ -261,11 +261,10 @@ task RevertSam {
     input_bam: "aligned bam"
   }
   command {
-    gatk \
-    RevertSam \
-    INPUT=~{input_bam} \
+    gatk RevertSam \
+    I=~{input_bam} \
     OUTPUT_BY_READGROUP=false \
-    OUTPUT=~{basename}.bam \
+    O=~{basename}.bam \
     VALIDATION_STRINGENCY=LENIENT \
     ATTRIBUTE_TO_CLEAR=FT \
     ATTRIBUTE_TO_CLEAR=CO \
